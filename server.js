@@ -102,8 +102,6 @@ const resolvers = {
 
   Mutation: {
     createUser: (parent, args, { pubsub }) => {
-     
-
       const id = users.length;
       const { name, age } = args;
       // const filteredName = users.filter(user => user.name === name)
@@ -118,8 +116,8 @@ const resolvers = {
       };
       users.push(newUser);
       // pubsub.publish(POST_ADDED, {postAdded:args})
-      pubsub.publish(NEW_USER,{
-        newUser
+      pubsub.publish(NEW_USER, {
+        newUser,
       });
 
       return newUser;
