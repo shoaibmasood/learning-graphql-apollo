@@ -9,7 +9,7 @@ const GET_ALLUSERS = gql`
 `;
 
 const CREATE_SINGLEUSER = gql`
-  mutation addUser($name: String!, $age: int) {
+  mutation addUser($name: String!, $age: Int) {
     createUser(name:$name, age:$age) {
       name
       id
