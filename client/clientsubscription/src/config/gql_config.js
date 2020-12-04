@@ -8,8 +8,8 @@ const httpLink = new HttpLink({
   uri: "http://localhost:4001",
 });
 
-const wslink = new WebSocketLink({
-  uri: "ws:http://localhost:4002",
+const wsLink = new WebSocketLink({
+  uri: "ws://localhost:4001",
   options: {
     reconnect: true,
   },
@@ -20,14 +20,14 @@ const splitLink = split(
     const { kind, operation } = getMainDefinition(query);
     return kind === "OperationDefinition" && operation === "subscription";
   },
-  wslink,
+  wsLink,
   httpLink
 );
 
 
 const client = new ApolloClient({
   cache: new InMemoryCache(),
-  splitLink
+  link: splitLink
 });
 
 export default client;
