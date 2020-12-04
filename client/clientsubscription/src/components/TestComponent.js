@@ -8,7 +8,7 @@ import {
 
 function TestComponent() {
   const { loading, error, data } = useQuery(GET_ALLUSERS);
-  console.log(data)
+ 
   const [createUser] = useMutation(CREATE_SINGLEUSER, {
     awaitRefetchQueries: true,
   });
