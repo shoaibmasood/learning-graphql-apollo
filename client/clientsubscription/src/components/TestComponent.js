@@ -1,15 +1,17 @@
-import React, { useState } from "react";
-import { useQuery, useMutation } from "@apollo/client";
-import {
-  GET_ALLUSERS,
-  CREATE_USER_SUBSCRIPTION,
-  CREATE_SINGLEUSER,
-} from "../Queries/Quries";
+import React from "react";
+import { useQuery, useMutation, useSubscription } from "@apollo/client";
+import { GET_ALLUSERS, CREATE_SINGLEUSER } from "../Queries/Quries";
+import SubscriptionComponent from "./SubscriptionComponent";
 
 function TestComponent() {
-  const { loading, error, data } = useQuery(GET_ALLUSERS);
+  const { loading, error, data, refetch } = useQuery(GET_ALLUSERS);
 
-  const [createUser] = useMutation(CREATE_SINGLEUSER);
+  //   const {data:{newUsers:{name}}}=useSubscription(CREATE_USER_SUBSCRIPTION);
+  //   console.log(name)
+
+  const [createUser] = useMutation(CREATE_SINGLEUSER, {
+    onCompleted: () => refetch(),
+  });
 
   const handleClick = async () => {
     await createUser({
@@ -17,7 +19,8 @@ function TestComponent() {
         name: "TESTUSER1",
         age: 100,
       },
-      refetchQueries: [{ query: GET_ALLUSERS }],
+
+      //   refetchQueries: [{ query: GET_ALLUSERS }],
     });
   };
 
@@ -28,14 +31,16 @@ function TestComponent() {
 
   return (
     <div>
-      {users.map((user) => (
-        <div>
+      {users.map((user, idx) => (
+        <div key={idx}>
           <ul>
             <li>{user.name}</li>
           </ul>
         </div>
       ))}
+
       <button onClick={handleClick}>Add User</button>
+      <SubscriptionComponent />
     </div>
   );
 }
